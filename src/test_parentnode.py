@@ -48,6 +48,17 @@ class TestParentNode(unittest.TestCase):
             "<p><b>BOLD</b>NORMAL<i><b>italibold</b></i>NORMAL</p>",
         )
 
+    def test_props(self):
+        node = ParentNode(
+            "a",
+            [LeafNode("p", "click me!", {"prop": "swag"})],
+            {"href": "https://www.google.com"},
+        )
+        self.assertEqual(
+            node.to_html(),
+            '<a href="https://www.google.com"><p prop="swag">click me!</p></a>',
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

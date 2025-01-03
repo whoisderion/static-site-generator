@@ -22,6 +22,12 @@ class HTMLNode:
             props_list += "None"
         return props_list
 
+    def get_children(self):
+        return self._children
+
+    def get_props(self):
+        return self._props
+
 
 class LeafNode(HTMLNode):
     def __init__(self, tag=None, value=None, props=None):
@@ -36,9 +42,6 @@ class LeafNode(HTMLNode):
             return f"<{self._tag}>{self._value}</{self._tag}>"
         return f"<{self._tag}{self.props_to_html()}>{self._value}</{self._tag}>"
 
-    def get_children(self):
-        return self._children
-
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
@@ -49,26 +52,25 @@ class ParentNode(HTMLNode):
             raise ValueError("Parent nodes must have a tag")
         elif self._children == None or self._children == []:
             raise ValueError("Parent nodes must have children")
-        else:
+        elif self._props == None:
             return f"<{self._tag}>{self.print_children(self._children)}</{self._tag}>"
+        return f"<{self._tag}{self.props_to_html()}>{self.print_children(self._children)}</{self._tag}>"
 
     def print_children(self, children, children_str=""):
         if len(children) < 1:
             return ""
 
-        if children[0].get_children() == None:
+        next_child = children[0]
+
+        if next_child.get_children() == None:
             return (
                 children_str
-                + children[0].to_html()
+                + next_child.to_html()
                 + self.print_children(children[1:], children_str)
             )
 
-        else:
-            return (
-                children_str
-                + children[0].to_html()
-                + self.print_children(children[1:], children_str)
-            )
-
-    def get_children(self):
-        return self._children
+        return (
+            children_str
+            + next_child.to_html()
+            + self.print_children(children[1:], children_str)
+        )
