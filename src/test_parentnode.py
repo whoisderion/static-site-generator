@@ -20,6 +20,10 @@ class TestParentNode(unittest.TestCase):
         node = ParentNode("p", [])
         self.assertRaises(ValueError, node.to_html)
 
+    def test_empty_children(self):
+        with self.assertRaises(TypeError):
+            node = ParentNode("p")
+
     def test_4_children(self):
         node = ParentNode(
             "p",
