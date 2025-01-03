@@ -1,6 +1,3 @@
-from warnings import warn
-
-
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self._tag = tag
@@ -50,14 +47,13 @@ class ParentNode(HTMLNode):
     def to_html(self):
         if self._tag == None:
             raise ValueError("Parent nodes must have a tag")
-        elif self._children == None:
+        elif self._children == None or self._children == []:
             raise ValueError("Parent nodes must have children")
         else:
             return f"<{self._tag}>{self.print_children(self._children)}</{self._tag}>"
 
     def print_children(self, children, children_str=""):
-
-        if len(children) == 0:
+        if len(children) < 1:
             return ""
 
         if children[0].get_children() == None:
@@ -67,23 +63,12 @@ class ParentNode(HTMLNode):
                 + self.print_children(children[1:], children_str)
             )
 
-        # I will need an else for if the child has children
         else:
             return (
                 children_str
-                + self.print_children(children[0].get_children())
+                + children[0].to_html()
                 + self.print_children(children[1:], children_str)
             )
 
-
-node = ParentNode(
-    "p",
-    [
-        LeafNode("b", "Bold text"),
-        LeafNode(None, "Normal text"),
-        LeafNode("i", "Italic text"),
-        LeafNode(None, "Normal text"),
-    ],
-)
-
-print(node.to_html())
+    def get_children(self):
+        return self._children
