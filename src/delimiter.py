@@ -6,7 +6,6 @@ def split_nodes(old_nodes, delimiter, text_type):
     for old_node in old_nodes:
         sections = old_node.text.split(delimiter)
         for index, split_node in enumerate(sections):
-            print(split_node)
             if split_node == "":
                 continue
             if index % 2 == 0:

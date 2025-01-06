@@ -62,9 +62,7 @@ class TestDelimiter(unittest.TestCase):
     def test_delim_bold_and_italic(self):
         node = TextNode("**bold** and *italic*", TextType.TEXT)
         new_nodes = split_nodes([node], "**", TextType.BOLD) or []
-        print(new_nodes)
         new_nodes = split_nodes(new_nodes, "*", TextType.ITALIC) or []
-        print(new_nodes)
         self.assertListEqual(
             [
                 TextNode("bold", TextType.BOLD),
